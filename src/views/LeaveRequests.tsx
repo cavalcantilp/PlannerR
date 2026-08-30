@@ -1,6 +1,7 @@
-import { Check, X } from 'lucide-react'
+import { Check, MessageSquare, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import Avatar from '../components/Avatar'
+import RequestCommentsModal from '../components/RequestCommentsModal'
 import StatusBadge from '../components/StatusBadge'
 import { formatDateRange } from '../lib/dates'
 import type { Employee, LeaveRequest, LeaveStatus } from '../types'
@@ -16,12 +17,15 @@ export default function LeaveRequests({
   employees,
   requests,
   onUpdateStatus,
+  onAddComment,
 }: {
   employees: Employee[]
   requests: LeaveRequest[]
   onUpdateStatus: (id: string, status: LeaveStatus) => void
+  onAddComment: (requestId: string, message: string) => void
 }) {
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>('Toutes')
+  const [openRequestId, setOpenRequestId] = useState<string | null>(null)
   const employeeById = new Map(employees.map((e) => [e.id, e]))
 
   const filtered = useMemo(() => {
@@ -29,6 +33,9 @@ export default function LeaveRequests({
       filter === 'Toutes' ? requests : requests.filter((r) => r.status === filter)
     return [...list].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   }, [requests, filter])
+
+  const openRequest = requests.find((r) => r.id === openRequestId) ?? null
+  const openEmployee = openRequest ? employeeById.get(openRequest.employeeId) : undefined
 
   return (
     <div className="flex flex-col gap-6">
@@ -98,6 +105,14 @@ export default function LeaveRequests({
                   </td>
                   <td className="px-5 py-3">
                     <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setOpenRequestId(r.id)}
+                        title="Commentaires"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100"
+                      >
+                        <MessageSquare size={16} />
+                      </button>
                       {r.status === 'En attente' ? (
                         <>
                           <button
@@ -117,9 +132,7 @@ export default function LeaveRequests({
                             <X size={16} />
                           </button>
                         </>
-                      ) : (
-                        <span className="text-xs text-slate-300">—</span>
-                      )}
+                      ) : null}
                     </div>
                   </td>
                 </tr>
@@ -133,6 +146,15 @@ export default function LeaveRequests({
           </p>
         )}
       </div>
+
+      {openRequest && openEmployee && (
+        <RequestCommentsModal
+          request={openRequest}
+          employeeName={`${openEmployee.firstName} ${openEmployee.lastName}`}
+          onClose={() => setOpenRequestId(null)}
+          onAddComment={(message) => onAddComment(openRequest.id, message)}
+        />
+      )}
     </div>
   )
 }

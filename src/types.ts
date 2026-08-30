@@ -7,6 +7,8 @@ export type LeaveType =
 
 export type LeaveStatus = 'En attente' | 'Approuvé' | 'Refusé'
 
+export type Role = 'manager' | 'employee'
+
 export interface Employee {
   id: string
   firstName: string
@@ -16,6 +18,14 @@ export interface Employee {
   color: string
   balancePaid: number
   balanceRtt: number
+}
+
+export interface RequestComment {
+  id: string
+  author: string
+  authorRole: Role
+  message: string
+  createdAt: string
 }
 
 export interface LeaveRequest {
@@ -28,4 +38,14 @@ export interface LeaveRequest {
   status: LeaveStatus
   reason: string
   createdAt: string
+  comments: RequestComment[]
+}
+
+export interface AppNotification {
+  id: string
+  audience: 'manager' | string
+  message: string
+  createdAt: string
+  read: boolean
+  tone: 'success' | 'warning' | 'info'
 }

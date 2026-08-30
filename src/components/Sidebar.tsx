@@ -1,27 +1,40 @@
 import {
   CalendarDays,
+  CalendarRange,
   LayoutDashboard,
   Plus,
   Users,
   type LucideIcon,
 } from 'lucide-react'
 import type { View } from '../App'
+import type { Role } from '../types'
 
-const NAV_ITEMS: { view: View; label: string; icon: LucideIcon }[] = [
+const MANAGER_NAV_ITEMS: { view: View; label: string; icon: LucideIcon }[] = [
   { view: 'dashboard', label: 'Tableau de bord', icon: LayoutDashboard },
   { view: 'requests', label: 'Demandes de congés', icon: CalendarDays },
   { view: 'employees', label: 'Salariés', icon: Users },
+  { view: 'calendar', label: 'Calendrier', icon: CalendarRange },
+]
+
+const EMPLOYEE_NAV_ITEMS: { view: View; label: string; icon: LucideIcon }[] = [
+  { view: 'my-dashboard', label: 'Mon tableau de bord', icon: LayoutDashboard },
+  { view: 'my-requests', label: 'Mes demandes', icon: CalendarDays },
+  { view: 'calendar', label: 'Calendrier', icon: CalendarRange },
 ]
 
 export default function Sidebar({
+  role,
   active,
   onNavigate,
   onNewRequest,
 }: {
+  role: Role
   active: View
   onNavigate: (view: View) => void
   onNewRequest: () => void
 }) {
+  const navItems = role === 'manager' ? MANAGER_NAV_ITEMS : EMPLOYEE_NAV_ITEMS
+
   return (
     <aside className="flex h-full w-64 shrink-0 flex-col border-r border-slate-200 bg-white">
       <div className="flex items-center gap-2 px-6 py-6">
@@ -35,7 +48,7 @@ export default function Sidebar({
       </div>
 
       <nav className="flex flex-1 flex-col gap-1 px-3">
-        {NAV_ITEMS.map(({ view, label, icon: Icon }) => {
+        {navItems.map(({ view, label, icon: Icon }) => {
           const isActive = active === view
           return (
             <button

@@ -1,5 +1,7 @@
 import type { Employee, LeaveRequest } from './types'
 
+export const MANAGER_NAME = 'Sophie Martin'
+
 export const employees: Employee[] = [
   {
     id: 'emp-1',
@@ -74,6 +76,15 @@ export const leaveRequests: LeaveRequest[] = [
     status: 'En attente',
     reason: 'Vacances en famille',
     createdAt: '2026-08-20',
+    comments: [
+      {
+        id: 'cmt-1',
+        author: MANAGER_NAME,
+        authorRole: 'manager',
+        message: 'Bien reçu, je regarde la charge de travail sur cette période.',
+        createdAt: '2026-08-21T09:15:00',
+      },
+    ],
   },
   {
     id: 'req-2',
@@ -85,6 +96,7 @@ export const leaveRequests: LeaveRequest[] = [
     status: 'Approuvé',
     reason: 'Rendez-vous personnel',
     createdAt: '2026-08-18',
+    comments: [],
   },
   {
     id: 'req-3',
@@ -96,6 +108,7 @@ export const leaveRequests: LeaveRequest[] = [
     status: 'En attente',
     reason: "Voyage à l'étranger",
     createdAt: '2026-08-25',
+    comments: [],
   },
   {
     id: 'req-4',
@@ -107,6 +120,7 @@ export const leaveRequests: LeaveRequest[] = [
     status: 'Approuvé',
     reason: 'Arrêt maladie',
     createdAt: '2026-08-18',
+    comments: [],
   },
   {
     id: 'req-5',
@@ -118,6 +132,15 @@ export const leaveRequests: LeaveRequest[] = [
     status: 'Refusé',
     reason: 'Mariage',
     createdAt: '2026-08-15',
+    comments: [
+      {
+        id: 'cmt-2',
+        author: MANAGER_NAME,
+        authorRole: 'manager',
+        message: "Refusé : nous avons déjà deux absences ce jour-là dans l'équipe RH.",
+        createdAt: '2026-08-16T11:00:00',
+      },
+    ],
   },
   {
     id: 'req-6',
@@ -129,6 +152,7 @@ export const leaveRequests: LeaveRequest[] = [
     status: 'En attente',
     reason: 'Projet personnel',
     createdAt: '2026-08-28',
+    comments: [],
   },
   {
     id: 'req-7',
@@ -140,5 +164,6 @@ export const leaveRequests: LeaveRequest[] = [
     status: 'Approuvé',
     reason: 'Pont du 15 août',
     createdAt: '2026-08-10',
+    comments: [],
   },
 ]

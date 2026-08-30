@@ -13,15 +13,17 @@ const LEAVE_TYPES: LeaveType[] = [
 
 export default function NewRequestModal({
   employees,
+  lockedEmployee,
   onClose,
   onCreate,
 }: {
   employees: Employee[]
+  lockedEmployee?: Employee
   onClose: () => void
-  onCreate: (request: Omit<LeaveRequest, 'id' | 'status' | 'createdAt'>) => void
+  onCreate: (request: Omit<LeaveRequest, 'id' | 'status' | 'createdAt' | 'comments'>) => void
 }) {
   const today = isoToday()
-  const [employeeId, setEmployeeId] = useState(employees[0]?.id ?? '')
+  const [employeeId, setEmployeeId] = useState(lockedEmployee?.id ?? employees[0]?.id ?? '')
   const [type, setType] = useState<LeaveType>('Congés payés')
   const [startDate, setStartDate] = useState(today)
   const [endDate, setEndDate] = useState(today)
@@ -66,17 +68,23 @@ export default function NewRequestModal({
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1.5 text-sm">
             <span className="font-medium text-slate-700">Salarié</span>
-            <select
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
-              className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
-            >
-              {employees.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {e.firstName} {e.lastName}
-                </option>
-              ))}
-            </select>
+            {lockedEmployee ? (
+              <p className="rounded-lg border border-slate-100 bg-slate-50 px-3 py-2 text-sm text-slate-600">
+                {lockedEmployee.firstName} {lockedEmployee.lastName}
+              </p>
+            ) : (
+              <select
+                value={employeeId}
+                onChange={(e) => setEmployeeId(e.target.value)}
+                className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+              >
+                {employees.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.firstName} {e.lastName}
+                  </option>
+                ))}
+              </select>
+            )}
           </label>
 
           <label className="flex flex-col gap-1.5 text-sm">
