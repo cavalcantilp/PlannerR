@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import type { SignUpParams } from '../hooks/useSupabaseAuth'
-import type { Role } from '../types'
 
 export default function Auth({
   onSignIn,
@@ -16,7 +15,6 @@ export default function Auth({
   const [lastName, setLastName] = useState('')
   const [department, setDepartment] = useState('')
   const [jobTitle, setJobTitle] = useState('')
-  const [role, setRole] = useState<Role>('employee')
   const [error, setError] = useState('')
   const [info, setInfo] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -37,7 +35,6 @@ export default function Auth({
         lastName,
         department,
         jobTitle,
-        role,
       })
       if (error) {
         setError(error)
@@ -116,30 +113,11 @@ export default function Auth({
                   className="rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setRole('employee')}
-                  className={`rounded-lg border py-2 text-sm font-medium transition-colors ${
-                    role === 'employee'
-                      ? 'border-indigo-400 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 text-slate-600'
-                  }`}
-                >
-                  Salarié
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('manager')}
-                  className={`rounded-lg border py-2 text-sm font-medium transition-colors ${
-                    role === 'manager'
-                      ? 'border-indigo-400 bg-indigo-50 text-indigo-700'
-                      : 'border-slate-200 text-slate-600'
-                  }`}
-                >
-                  Manager
-                </button>
-              </div>
+              <p className="rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-500">
+                Le tout premier compte créé devient automatiquement manager. Les
+                suivants sont salariés — un manager peut ensuite en promouvoir
+                d'autres depuis l'écran Salariés.
+              </p>
             </>
           )}
 

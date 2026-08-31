@@ -158,6 +158,12 @@ export function useAppData(session: Session) {
     await refetch()
   }
 
+  async function promoteToManager(employeeId: string) {
+    if (!supabase || role !== 'manager') return
+    await supabase.from('profiles').update({ role: 'manager' }).eq('id', employeeId)
+    await refetch()
+  }
+
   async function markAllRead() {
     if (!supabase) return
     const visibleAudience = role === 'manager' ? 'manager' : userId
@@ -178,6 +184,7 @@ export function useAppData(session: Session) {
     createRequest,
     updateStatus,
     addComment,
+    promoteToManager,
     markAllRead,
   }
 }

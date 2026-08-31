@@ -1,9 +1,15 @@
-import { Search } from 'lucide-react'
+import { Search, ShieldCheck } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import Avatar from '../components/Avatar'
 import type { Employee } from '../types'
 
-export default function Employees({ employees }: { employees: Employee[] }) {
+export default function Employees({
+  employees,
+  onPromote,
+}: {
+  employees: Employee[]
+  onPromote?: (employeeId: string) => void
+}) {
   const [query, setQuery] = useState('')
 
   const filtered = useMemo(() => {
@@ -75,6 +81,17 @@ export default function Employees({ employees }: { employees: Employee[] }) {
                 <p className="text-xs text-slate-500">RTT restants</p>
               </div>
             </div>
+
+            {onPromote && (
+              <button
+                type="button"
+                onClick={() => onPromote(employee.id)}
+                className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-lg border border-slate-200 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
+              >
+                <ShieldCheck size={14} />
+                Promouvoir manager
+              </button>
+            )}
           </div>
         ))}
         {filtered.length === 0 && (

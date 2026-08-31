@@ -1,7 +1,6 @@
 import type { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import type { Role } from '../types'
 
 export interface SignUpParams {
   email: string
@@ -10,7 +9,6 @@ export interface SignUpParams {
   lastName: string
   department: string
   jobTitle: string
-  role: Role
 }
 
 export function useSupabaseAuth() {
@@ -49,7 +47,6 @@ export function useSupabaseAuth() {
           last_name: params.lastName,
           department: params.department,
           job_title: params.jobTitle,
-          role: params.role,
         },
       },
     })

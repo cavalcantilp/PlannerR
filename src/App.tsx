@@ -61,6 +61,7 @@ function AppShell({
   onCreateRequest,
   onAddComment,
   onMarkAllRead,
+  onPromote,
 }: {
   role: Role
   view: View
@@ -78,6 +79,7 @@ function AppShell({
   ) => void
   onAddComment: (requestId: string, message: string) => void
   onMarkAllRead: () => void
+  onPromote?: (employeeId: string) => void
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -113,7 +115,9 @@ function AppShell({
                 onAddComment={onAddComment}
               />
             )}
-            {view === 'employees' && <Employees employees={employees} />}
+            {view === 'employees' && (
+              <Employees employees={employees} onPromote={onPromote} />
+            )}
             {view === 'calendar' && (
               <Calendar
                 employees={employees}
@@ -356,6 +360,7 @@ function AuthedApp({ session, onSignOut }: { session: Session; onSignOut: () => 
       onCreateRequest={data.createRequest}
       onAddComment={data.addComment}
       onMarkAllRead={data.markAllRead}
+      onPromote={data.promoteToManager}
     />
   )
 }
